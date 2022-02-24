@@ -1,27 +1,19 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Telanflow\Sms;
 
-namespace iBrand\Sms;
-
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use iBrand\Sms\Facade as Sms;
+use Telanflow\Sms\Facade as Sms;
 
 /**
  * Class SmsController
- * @package iBrand\Sms
+ * @package Telanflow\Sms
  */
 class SmsController extends Controller
 {
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function postSendCode()
     {
@@ -47,15 +39,15 @@ class SmsController extends Controller
      */
     public function info()
     {
-        $html = '<meta charset="UTF-8"/><h2 align="center" style="margin-top: 30px;margin-bottom: 0;">iBrand Laravel Sms</h2>';
+        $html = '<meta charset="UTF-8"/><h2 align="center" style="margin-top: 30px;margin-bottom: 0;">Laravel Sms</h2>';
         $html .= '<p style="margin-bottom: 30px;font-size: 13px;color: #888;" align="center">' . 1.0 . '</p>';
-        $html .= '<p><a href="https://github.com/ibrandcc/laravel-sms" target="_blank">ibrand laravel-sms源码</a>托管在GitHub，欢迎你的使用。如有问题和建议，欢迎提供issue。</p>';
+        $html .= '<p><a href="https://github.com/telanflow/laravel-sms" target="_blank">laravel-sms源码</a>托管在GitHub，欢迎你的使用。如有问题和建议，欢迎提供issue。</p>';
         $html .= '<hr>';
         $html .= '<p>你可以在调试模式(设置config/app.php中的debug为true)下查看到存储在存储器中的验证码短信/语音相关数据:</p>';
         echo $html;
         if (config('app.debug')) {
 
-            $key = md5('ibrand.sms.' . request('mobile'));
+            $key = md5('sms.' . request('mobile'));
 
             dump(Sms::getStorage()->get($key, ''));
         } else {

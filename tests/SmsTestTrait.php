@@ -1,24 +1,13 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Telanflow\Sms\Test;
 
-namespace iBrand\Sms\Test;
-
-use DB;
-use iBrand\Sms\Sms as SmsClass;
-use iBrand\Sms\Storage\CacheStorage;
+use Telanflow\Sms\Facade as Sms;
+use Telanflow\Sms\Storage\CacheStorage;
 use Overtrue\EasySms\EasySms;
 use Overtrue\EasySms\Gateways\YuntongxunGateway;
 use Overtrue\EasySms\PhoneNumber;
 use Overtrue\EasySms\Support\Config;
-use Sms;
 
 trait SmsTestTrait
 {
@@ -36,7 +25,7 @@ trait SmsTestTrait
 	 */
 	public function testKey()
 	{
-		$key = md5('ibrand.sms.18988888888');
+		$key = md5('sms.18988888888');
 		Sms::setKey('18988888888');
 		$this->assertEquals($key, Sms::getKey());
 	}
@@ -55,7 +44,7 @@ trait SmsTestTrait
 		$this->assertTrue($result);
 
 		//3. test use old code.
-		$this->app['config']->set('ibrand.sms.code.maxAttempts', 1);
+		$this->app['config']->set('sms.code.maxAttempts', 1);
 		$result = Sms::send('18988888888');
 		$this->assertTrue($result);
 	}
@@ -99,11 +88,11 @@ trait SmsTestTrait
 	public function testBadGateway()
 	{
 		//1. test does not exist gateway.
-		$storage = config('ibrand.sms.storage', CacheStorage::class);
+		$storage = config('sms.storage', CacheStorage::class);
 
-		$this->app['config']->set('ibrand.sms.easy_sms.default.gateways', ['bad_gateway']);
+		$this->app['config']->set('sms.easy_sms.default.gateways', ['bad_gateway']);
 
-		$sms = new SmsClass(new EasySms(config('ibrand.sms.easy_sms')), new $storage());
+		$sms = new SmsClass(new EasySms(config('sms.easy_sms')), new $storage());
 
 		$result = $sms->send('18988888888');
 		$this->assertFalse($result);
@@ -111,7 +100,7 @@ trait SmsTestTrait
 
 	public function testSendUseDbLog()
 	{
-		$this->app['config']->set('ibrand.sms.dblog', true);
+		$this->app['config']->set('sms.dblog', true);
 
 		$result = Sms::send('18988888888');
 		$this->assertTrue($result);
@@ -154,13 +143,13 @@ trait SmsTestTrait
 			'account_token'  => 'mock-account-token',
 			'app_id'         => 'mock-app-id',
 		];
-		$gateways   = config('ibrand.sms.easy_sms.gateways');
+		$gateways   = config('sms.easy_sms.gateways');
 		$gateways   = array_merge($gateways, ['yuntongxun' => $yuntongxun]);
-		config(['ibrand.sms.easy_sms.gateways' => $gateways]);
+		config(['sms.easy_sms.gateways' => $gateways]);
 
-		$storage = config('ibrand.sms.storage', CacheStorage::class);
+		$storage = config('sms.storage', CacheStorage::class);
 		$storage = new $storage();
-		$easySms = new EasySms(config('ibrand.sms.easy_sms'));
+		$easySms = new EasySms(config('sms.easy_sms'));
 		$sms     = new SmsClass($easySms, $storage);
 		$code    = $sms->getNewCode('18188888888');
 

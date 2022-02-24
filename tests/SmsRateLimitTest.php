@@ -1,6 +1,6 @@
 <?php
 
-namespace iBrand\Sms\Test;
+namespace Telanflow\Sms\Test;
 
 class SmsRateLimitTest extends SmsTest
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace iBrand\Sms\Test;
+namespace Telanflow\Sms\Test;
 
 use Overtrue\EasySms\Message;
 use Overtrue\EasySms\Contracts\GatewayInterface;
@@ -12,6 +12,7 @@ class CustomMessage extends Message
 
 	public function __construct($code)
 	{
+        parent::__construct();
 		$this->code = $code;
 	}
 

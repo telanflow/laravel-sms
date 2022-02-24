@@ -1,15 +1,6 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace iBrand\Sms\Messages;
+namespace Telanflow\Sms\Messages;
 
 use Overtrue\EasySms\Contracts\GatewayInterface;
 use Overtrue\EasySms\Message;
@@ -30,14 +21,16 @@ class CodeMessage extends Message
 
 	protected $data;
 
-	/**
-	 * CodeMessage constructor.
-	 *
-	 * @param $code
-	 * @param $minutes
-	 */
+    /**
+     * CodeMessage constructor.
+     *
+     * @param $code
+     * @param $minutes
+     * @param array $data
+     */
 	public function __construct($code, $minutes, array $data = [])
 	{
+        parent::__construct();
 		$this->code    = $code;
 		$this->minutes = $minutes;
 		$this->data    = $data;
@@ -51,11 +44,11 @@ class CodeMessage extends Message
 	 * @return string
 	 */
 	public function getContent(GatewayInterface $gateway = null)
-	{
+    {
 		if (!empty($this->data) && isset($this->data['content'])) {
 			$content = $this->data['content'];
 		} else {
-			$content = config('ibrand.sms.content');
+			$content = config('sms.content');
 		}
 
 		return vsprintf($content, [$this->code, $this->minutes]);
@@ -83,7 +76,7 @@ class CodeMessage extends Message
 		if (!empty($this->data) && isset($this->data['template'])) {
 			return $this->data['template'];
 		} else {
-			return config('ibrand.sms.easy_sms.gateways.' . $classname . '.code_template_id');
+			return config('sms.easy_sms.gateways.' . $classname . '.code_template_id');
 		}
 	}
 
@@ -97,9 +90,10 @@ class CodeMessage extends Message
 		if (!empty($this->data) && isset($this->data['data']) && is_array($this->data['data'])) {
 			$data = $this->data['data'];
 		} else {
-			$data = array_filter(config('ibrand.sms.data'));
+			$data = array_filter(config('sms.data'));
 		}
 
 		return array_merge($data, ['code' => $this->code]);
 	}
+
 }

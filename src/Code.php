@@ -1,21 +1,9 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace iBrand\Sms;
+namespace Telanflow\Sms;
 
 use Illuminate\Support\Collection;
 
-/**
- * Class Code.
- */
 class Code extends Collection
 {
     /**
@@ -29,8 +17,13 @@ class Code extends Collection
      */
     public function __construct($to, $code, $sent, $attempts, $expireAt)
     {
-        $items = compact('to', 'code', 'sent', 'attempts', 'expireAt');
-        parent::__construct($items);
+        parent::__construct([
+            'to' => $to,
+            'code' => $code,
+            'sent' => $sent,
+            'attempts' => $attempts,
+            'expireAt' => $expireAt,
+        ]);
     }
 
     /**

@@ -1,9 +1,10 @@
 <?php
 
-namespace iBrand\Sms\Http\Middleware;
+namespace Telanflow\Sms\Http\Middleware;
 
 use Closure;
 use Illuminate\Cache\RateLimiter;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ThrottleRequests
@@ -11,14 +12,14 @@ class ThrottleRequests
 	/**
 	 * The rate limiter instance.
 	 *
-	 * @var \Illuminate\Cache\RateLimiter
+	 * @var RateLimiter
 	 */
-	protected $limiter;
+	protected RateLimiter $limiter;
 
 	/**
 	 * Create a new request throttler.
 	 *
-	 * @param \Illuminate\Cache\RateLimiter $limiter
+	 * @param RateLimiter $limiter
 	 */
 	public function __construct(RateLimiter $limiter)
 	{
@@ -28,10 +29,10 @@ class ThrottleRequests
 	/**
 	 * Handle an incoming request.
 	 *
-	 * @param \Illuminate\Http\Request $request
-	 * @param \Closure                 $next
-	 * @param int                      $maxAttempts
-	 * @param int                      $decayMinutes
+	 * @param Request $request
+	 * @param Closure $next
+	 * @param int     $maxAttempts
+	 * @param int     $decayMinutes
 	 *
 	 * @return mixed
 	 */
@@ -56,7 +57,7 @@ class ThrottleRequests
 	/**
 	 * Resolve request signature.
 	 *
-	 * @param \Illuminate\Http\Request $request
+	 * @param Request $request
 	 *
 	 * @return string
 	 */
@@ -71,7 +72,7 @@ class ThrottleRequests
 	 * @param $key
 	 * @param $maxAttempts
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	protected function buildResponse($key, $maxAttempts)
 	{
@@ -94,12 +95,12 @@ class ThrottleRequests
 	/**
 	 * Add the limit header information to the given response.
 	 *
-	 * @param \Symfony\Component\HttpFoundation\Response $response
-	 * @param                                            $maxAttempts
-	 * @param                                            $remainingAttempts
-	 * @param null                                       $retryAfter
+	 * @param Response $response
+	 * @param          $maxAttempts
+	 * @param          $remainingAttempts
+	 * @param null     $retryAfter
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	protected function addHeaders(Response $response, $maxAttempts, $remainingAttempts, $retryAfter = null)
 	{

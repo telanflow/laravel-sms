@@ -2,13 +2,13 @@
 
 Laravel 贴合实际需求同时满足多种通道的短信发送组件
 
-[![Build Status](https://travis-ci.org/guojiangclub/laravel-sms.svg?branch=master)](https://travis-ci.org/guojiangclub/laravel-sms)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/guojiangclub/laravel-sms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/guojiangclub/laravel-sms/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/guojiangclub/laravel-sms/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/guojiangclub/laravel-sms/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/guojiangclub/laravel-sms/badges/build.png?b=master)](https://scrutinizer-ci.com/g/guojiangclub/laravel-sms/build-status/master)
+[![Build Status](https://travis-ci.org/telanflow/laravel-sms.svg?branch=master)](https://travis-ci.org/telanflow/laravel-sms)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/telanflow/laravel-sms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/telanflow/laravel-sms/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/telanflow/laravel-sms/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/telanflow/laravel-sms/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/telanflow/laravel-sms/badges/build.png?b=master)](https://scrutinizer-ci.com/g/telanflow/laravel-sms/build-status/master)
 [![Latest Stable Version](https://poser.pugx.org/ibrand/laravel-sms/v/stable)](https://packagist.org/packages/ibrand/laravel-sms)
 [![Latest Unstable Version](https://poser.pugx.org/ibrand/laravel-sms/v/unstable)](https://packagist.org/packages/ibrand/laravel-sms)
-[![License](https://poser.pugx.org/ibrand/laravel-sms/license)](https://packagist.org/packages/ibrand/laravel-sms)
+[![License](https://poser.pugx.org/telanflow/laravel-sms/license)](https://packagist.org/packages/telanflow/laravel-sms)
 
 ## Featrue
 
@@ -31,20 +31,25 @@ Laravel 贴合实际需求同时满足多种通道的短信发送组件
 ## 安装
 
 ```php
-composer require ibrand/laravel-sms:~1.0 -vvv
+composer require telanflow/laravel-sms
 ```
 
 低于 Laravel5.5 版本
 
 `config/app.php` 文件中 'providers' 添加
 ```php
-iBrand\Sms\ServiceProvider::class
+Telanflow\Sms\ServiceProvider::class
 ```
 
 `config/app.php` 文件中 'aliases' 添加
 
 ```php
-'Sms'=> iBrand\Sms\Facade::class
+'Sms'=> Telanflow\Sms\Facade::class
+```
+
+发布配置文件
+```php
+php artisan vendor:publish --provider="iBrand\Sms\ServiceProvider"
 ```
 
 ## 使用
@@ -85,7 +90,7 @@ POST请求 `http://your.domain/sms/verify-code`
 2. 如果需要自定义路由，也可以通过使用Facade发送验证码：
 
 ```php
-use iBrand\Sms\Facade as Sms;
+use Telanflow\Sms\Facade as Sms;
 
 Sms::send(request('mobile'));
 ```
@@ -97,7 +102,7 @@ Sms::send(request('mobile'));
 - `data` 模板变量，使用在以模板ID来发送短信的平台
 
 ```php
-use iBrand\Sms\Facade as Sms;
+use Telanflow\Sms\Facade as Sms;
 
 Sms::send(request('mobile'), [
     'content'  => '您的验证码为: 83115',
@@ -111,7 +116,7 @@ Sms::send(request('mobile'), [
 默认使用 `default` 中的设置来发送，如果某一条短信你想要覆盖默认的设置。在 `send` 方法中使用第三个参数即可：
 
 ```php
-use iBrand\Sms\Facade as Sms;
+use Telanflow\Sms\Facade as Sms;
 
 Sms::send((request('mobile'), [
     'content'  => '您的验证码为: 83115',
@@ -166,10 +171,10 @@ class CustomMessage extends Message
 }
 ```
 
-使用，具体请参考`iBrand\Sms\Test\CustomMessage`：
+使用，具体请参考`Telanflow\Sms\Test\CustomMessage`：
 
 ```php
-use iBrand\Sms\Facade as Sms;
+use Telanflow\Sms\Facade as Sms;
 $code = Sms::getNewCode(request('mobile'));
 $message = new CustomMessage($code->code);
 
@@ -179,7 +184,7 @@ Sms::send(request('mobile'), $message, ['yuntongxun']);
 ### 验证验证码
 
 ```php
-use iBrand\Sms\Facade as Sms;
+use Telanflow\Sms\Facade as Sms;
 
 if (!Sms::checkCode(\request('mobile'), \request('code'))) {
     //Add you code.

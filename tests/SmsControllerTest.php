@@ -1,37 +1,31 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Telanflow\Sms\Test;
 
-namespace iBrand\Sms\Test;
+use Illuminate\Foundation\Application;
+use Orchestra\Testbench\TestCase;
 
-class SmsControllerTest extends \Orchestra\Testbench\TestCase
+class SmsControllerTest extends TestCase
 {
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
     protected function getPackageProviders($app)
     {
-        return ['iBrand\Sms\ServiceProvider'];
+        return ['Telanflow\Sms\ServiceProvider'];
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
     protected function getPackageAliases($app)
     {
         return [
-            'Sms' => "iBrand\Sms\Facade",
+            'Sms' => "Telanflow\Sms\Facade",
         ];
     }
 

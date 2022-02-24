@@ -1,30 +1,17 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Telanflow\Sms;
 
-namespace iBrand\Sms;
-
-use iBrand\Sms\Storage\CacheStorage;
+use Telanflow\Sms\Storage\CacheStorage;
 use Illuminate\Support\Facades\Route;
 use Overtrue\EasySms\EasySms;
-use iBrand\Sms\Http\Middleware\ThrottleRequests;
 
-/**
- * Class ServiceProvider.
- */
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
 	/**
 	 * @var string
 	 */
-	protected $namespace = 'iBrand\Sms';
+	protected $namespace = 'Telanflow\Sms';
 
 	/**
 	 * Boot the service provider.
@@ -33,20 +20,23 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	{
 		if ($this->app->runningInConsole()) {
 			$this->publishes([
-				__DIR__ . '/../config/config.php' => config_path('ibrand/sms.php'),
+				__DIR__ . '/../config/config.php' => config_path('sms.php'),
 			]);
 
 			$this->loadMigrationsFrom(__DIR__ . '/../migrations');
 		}
 
-		if (!$this->app->routesAreCached()) {
-			$routeAttr = config('ibrand.sms.route', []);
-			if (config('ibrand.sms.enable_rate_limit')) {
-				$routeAttr['middleware'] = array_merge($routeAttr['middleware'], [config('ibrand.sms.rate_limit_middleware') . ':' . config('ibrand.sms.rate_limit_count') . ',' . config('ibrand.sms.rate_limit_time')]);
+		if (!$this->app->routesAreCached())
+        {
+			$routeAttr = config('sms.route', []);
+			if (config('sms.enable_rate_limit')) {
+				$routeAttr['middleware'] = array_merge($routeAttr['middleware'], [
+                    config('sms.rate_limit_middleware') . ':' . config('sms.rate_limit_count') . ',' . config('sms.rate_limit_time')
+                ]);
 			}
 
 			Route::group(array_merge(['namespace' => $this->namespace], $routeAttr), function ($router) {
-				require __DIR__ . '/route.php';
+				require_once __DIR__ . '/route.php';
 			});
 		}
 	}
@@ -56,14 +46,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	 */
 	public function register()
 	{
-		$this->mergeConfigFrom(
-			__DIR__ . '/../config/config.php', 'ibrand.sms'
-		);
+		$this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'sms');
 
-		$this->app->singleton(Sms::class, function ($app) {
-			$storage = config('ibrand.sms.storage', CacheStorage::class);
+		$this->app->singleton(Sms::class, function ()
+        {
+			$storage = config('sms.storage', CacheStorage::class);
 
-			return new Sms(new EasySms(config('ibrand.sms.easy_sms')), new $storage());
+			return new Sms(new EasySms(config('sms.easy_sms')), new $storage());
 		});
 	}
 

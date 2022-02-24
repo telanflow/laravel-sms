@@ -1,18 +1,24 @@
 <?php
 
-/*
- * This file is part of ibrand/laravel-sms.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Telanflow\Sms;
 
-namespace iBrand\Sms;
+use Telanflow\Sms\Storage\CacheStorage;
+use Telanflow\Sms\Storage\StorageInterface;
 
 /**
- * Class Facade.
+ * SMS Facade.
+ *
+ * @method static void setKey($key)
+ * @method static mixed getKey()
+ * @method static void setStorage(StorageInterface $storage)
+ * @method static CacheStorage|StorageInterface getStorage()
+ * @method static bool send($mobile, $data = [], array $gateways = [])
+ * @method static false|int verifyMobile($mobile)
+ * @method static mixed getCodeFromStorage()
+ * @method static Code getNewCode()
+ * @method static bool canSend($value)
+ * @method static Code generateCode($mobile)
+ * @method static bool checkCode($mobile, $inputCode)
  */
 class Facade extends \Illuminate\Support\Facades\Facade
 {
