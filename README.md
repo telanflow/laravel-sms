@@ -49,7 +49,7 @@ Telanflow\Sms\ServiceProvider::class
 
 发布配置文件
 ```php
-php artisan vendor:publish --provider="iBrand\Sms\ServiceProvider"
+php artisan vendor:publish --provider="Telanflow\Sms\ServiceProvider"
 ```
 
 ## 使用
